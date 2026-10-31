@@ -1,0 +1,83 @@
+# CML-Adapter für Millennium Dawn v2.0.3 (Spec 4.1): Effekte.
+# Meinungs-Adapter lesen temp_opinion (Aufrufer setzt es); MD kopiert es selbst in
+# temp_opinion_change (00_internal_faction_effects.txt, autocrats_opinion_change).
+
+# Kader-Gruppe statt Rohstoffindustrie (Muster SOV_communist_purges, swap_ideas).
+cml_adapter_install_cadres = {
+	log = "[GetDateText]: [Root.GetName]: cml_adapter_install_cadres"
+	if = {
+		limit = { has_idea = fossil_fuel_industry }
+		swap_ideas = {
+			remove_idea = fossil_fuel_industry
+			add_idea = communist_cadres
+		}
+	}
+}
+
+# Oligarchen raus, Gewerkschaften rein, danach Gewerkschaften +unions_after_swap.
+cml_adapter_purge_oligarchs = {
+	log = "[GetDateText]: [Root.GetName]: cml_adapter_purge_oligarchs"
+	if = {
+		limit = { has_idea = oligarchs }
+		swap_ideas = {
+			remove_idea = oligarchs
+			add_idea = labour_unions
+		}
+		set_temp_variable = { temp_opinion = @@unions_after_swap@@ }
+		change_labour_unions_opinion = yes
+	}
+}
+
+cml_adapter_cadres_opinion = {
+	log = "[GetDateText]: [Root.GetName]: cml_adapter_cadres_opinion"
+	if = {
+		limit = { has_idea = communist_cadres }
+		change_communist_cadres_opinion = yes
+	}
+}
+
+cml_adapter_unions_opinion = {
+	log = "[GetDateText]: [Root.GetName]: cml_adapter_unions_opinion"
+	if = {
+		limit = { has_idea = labour_unions }
+		change_labour_unions_opinion = yes
+	}
+}
+
+cml_adapter_siloviki_opinion = {
+	log = "[GetDateText]: [Root.GetName]: cml_adapter_siloviki_opinion"
+	if = {
+		limit = { has_idea = intelligence_community }
+		change_intelligence_community_opinion = yes
+	}
+}
+
+cml_adapter_reduce_corruption = {
+	log = "[GetDateText]: [Root.GetName]: cml_adapter_reduce_corruption"
+	decrease_corruption = yes
+}
+
+# cml_treasury_change in Mrd. $ (Vorzeichen im Wert); MD erwartet treasury_change.
+cml_adapter_treasury = {
+	log = "[GetDateText]: [Root.GetName]: cml_adapter_treasury"
+	set_temp_variable = { treasury_change = cml_treasury_change }
+	modify_treasury_effect = yes
+}
+
+# Wolnowa als Staatsoberhaupt (Muster events/Russia.txt:1631, Spec 11 P7; kein Charakter-Eintrag).
+cml_adapter_install_leader = {
+	log = "[GetDateText]: [Root.GetName]: cml_adapter_install_leader"
+	create_country_leader = {
+		name = "Darja Wolnowa"
+		picture = GFX_portrait_generic_europe_female_01
+		ideology = communist_state
+		traits = {
+			emerging_communist_state
+		}
+	}
+}
+
+# Teilprojekt 1: keine Umbenennung (Spec 11 P3), nur Logzeile.
+cml_adapter_rename_party = {
+	log = "[GetDateText]: [Root.GetName]: cml_adapter_rename_party"
+}

@@ -1,0 +1,28 @@
+# CML-Adapter für Millennium Dawn v2.0.3 (Spec 4.1): Trigger.
+# base/ ruft nur diese Namen auf; ein anderer Adapter (z. B. TFR) implementiert dieselben.
+
+# Einstieg sichtbar: Zyuganov abgeschlossen, keine Gabelung gewählt, CML noch nicht gestartet.
+cml_adapter_entry_visible = {
+	has_completed_focus = SOV_zyuganov
+	NOT = { has_completed_focus = SOV_communist_party_dominance }
+	NOT = { has_completed_focus = SOV_honor_gorbachevs_legacy }
+	NOT = { has_completed_focus = SOV_national_patriotic_alliance }
+	NOT = { has_country_flag = SOV_cml_path }
+}
+
+# Einstieg gesperrt: einer der drei Gabelungsfokusse ist abgeschlossen.
+cml_adapter_entry_blocked = {
+	OR = {
+		has_completed_focus = SOV_communist_party_dominance
+		has_completed_focus = SOV_honor_gorbachevs_legacy
+		has_completed_focus = SOV_national_patriotic_alliance
+	}
+}
+
+# Kommunistische Partei regiert (wie im KPRF-Ast, 05_russia.txt SOV_communist_purges).
+cml_adapter_cml_in_power = {
+	OR = {
+		emerging_communist_state_are_in_power = yes
+		neutrality_neutral_communism_are_in_power = yes
+	}
+}
