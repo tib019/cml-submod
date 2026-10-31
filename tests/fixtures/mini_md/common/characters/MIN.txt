@@ -1,0 +1,5 @@
+characters = {
+	MIN_person = {
+		name = "Person"
+	}
+}

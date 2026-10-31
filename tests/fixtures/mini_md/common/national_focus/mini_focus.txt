@@ -1,0 +1,12 @@
+focus_tree = {
+	id = mini_tree
+	country = { factor = 0 }
+	focus = {
+		id = SOV_zyuganov # Kommentar
+		x = 1
+		y = 0
+	}
+	shared_focus = {
+		id = mini_shared
+	}
+}

@@ -1,0 +1,9 @@
+spriteTypes = {
+	spriteType = {
+		name = "GFX_goal_generic_political_pressure"
+		texturefile = "gfx/interface/goals/x.dds"
+	}
+	frameAnimatedSpriteType = {
+		name = "GFX_mini_animated"
+	}
+}

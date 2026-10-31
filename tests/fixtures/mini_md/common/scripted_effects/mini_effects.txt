@@ -1,0 +1,3 @@
+change_labour_unions_opinion = {
+	add_to_variable = { temp_opinion = 1 }
+}

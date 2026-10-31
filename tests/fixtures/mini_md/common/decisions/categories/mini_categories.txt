@@ -1,0 +1,3 @@
+mini_category = {
+	icon = GFX_x
+}

@@ -1,0 +1,2 @@
+namespace = sov_other
+country_event = { id = sov_other.1 }

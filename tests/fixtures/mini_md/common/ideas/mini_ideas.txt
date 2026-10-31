@@ -1,0 +1,11 @@
+ideas = {
+	country = {
+		oligarchs = {
+			picture = production_bonus
+		}
+	}
+	hidden_ideas = {
+		law = yes
+		mini_hidden_idea = { picture = x }
+	}
+}

@@ -1,0 +1,5 @@
+mini_category = {
+	mini_decision = {
+		cost = 5
+	}
+}
