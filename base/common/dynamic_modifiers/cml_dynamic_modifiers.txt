@@ -1,0 +1,8 @@
+# Dynamischer Modifier der laufenden Kampagne (Spec 5.4). Namen laut P2.
+SOV_cml_feedback_modifier = {
+	icon = GFX_idea_party_before_country
+	stability_factor = -@@spirit_feedback_stab@@
+	political_power_factor = -@@spirit_feedback_pp@@
+	drift_defence_factor = @@spirit_feedback_drift_def@@
+	communism_drift = @@spirit_feedback_comm_drift@@
+}

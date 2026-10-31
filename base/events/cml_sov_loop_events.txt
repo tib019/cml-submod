@@ -1,0 +1,43 @@
+# Monatsschleife der Kampagne (Spec 5.2). Nur der Einstieg startet sie; sie plant sich
+# ausschließlich bei aktiver Kampagne neu.
+add_namespace = sov_cml
+
+country_event = {
+	id = sov_cml.100
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { cml_campaign_active = yes }
+
+			set_temp_variable = { cml_delta = @@monthly_base@@ }
+			cml_add_party_base = yes
+
+			set_temp_variable = { cml_delta = @@monthly_osc@@ }
+			if = {
+				limit = { has_country_flag = SOV_cml_amplified }
+				set_temp_variable = { cml_delta = @@monthly_osc_amplified@@ }
+			}
+			cml_add_oscillation = yes
+
+			if = {
+				limit = {
+					cml_campaign_active = yes
+					has_country_flag = SOV_cml_amplified
+				}
+				add_to_variable = { SOV_cml_amplified_days = 30 }
+				if = {
+					limit = {
+						check_variable = { SOV_cml_amplified_days >= @@amplify_duration_days@@ }
+						NOT = { has_country_flag = SOV_cml_threshold_20_fired }
+					}
+					set_country_flag = SOV_cml_threshold_20_fired
+					country_event = { id = sov_cml.20 }
+				}
+			}
+
+			country_event = { id = sov_cml.100 days = 30 }
+		}
+	}
+}

@@ -1,0 +1,4 @@
+# CML-Kern: Trigger (Spec 5.2). Die Kampagne läuft, solange das Flag gesetzt ist.
+cml_campaign_active = {
+	has_country_flag = SOV_cml_campaign_active
+}

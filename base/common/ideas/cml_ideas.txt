@@ -1,0 +1,42 @@
+# Geister der Großen Rückkopplung (Spec 5.4). Bilder: GFX_idea_<picture> aus dem MD-Bestand.
+ideas = {
+	country = {
+		SOV_cml_democratic_centralism = {
+			picture = centralized_control_spirit
+			removal_cost = -1
+			modifier = {
+				stability_factor = @@spirit_dc_stab@@
+				political_power_factor = @@spirit_dc_pp@@
+			}
+		}
+		# Wird per add_timed_idea vergeben (Laufzeit spirit_exhausted_days).
+		SOV_cml_exhausted_movement = {
+			picture = generic_protest
+			removal_cost = -1
+			modifier = {
+				stability_factor = -@@spirit_exhausted_stab@@
+				industrial_capacity_factory = -@@spirit_exhausted_factory@@
+				political_power_factor = -@@spirit_exhausted_pp@@
+			}
+		}
+		# Wird per add_timed_idea vergeben (Laufzeit spirit_standstill_days).
+		SOV_cml_factory_standstill = {
+			picture = factory_strikes
+			removal_cost = -1
+			modifier = {
+				industrial_capacity_factory = -@@spirit_standstill_factory@@
+				consumer_goods_factor = @@spirit_standstill_cg@@
+			}
+		}
+		# Bleibt bis zur Entscheidung SOV_cml_end_the_cult; das Flag sperrt in Phase 3 die Räteordnung.
+		SOV_cml_leader_cult = {
+			picture = zyuganov_cult
+			removal_cost = -1
+			on_add = { set_country_flag = SOV_cml_leader_cult }
+			on_remove = { clr_country_flag = SOV_cml_leader_cult }
+			modifier = {
+				stability_factor = @@spirit_cult_stab@@
+			}
+		}
+	}
+}

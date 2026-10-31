@@ -1,0 +1,87 @@
+# CML-Kern: Hilfseffekte (Spec 5.2). Aufrufer setzen die temporäre Variable cml_delta
+# per set_temp_variable; negative Werte tragen das Vorzeichen im Wert.
+
+cml_add_party_base = {
+	add_to_variable = { SOV_cml_party_base = cml_delta }
+	clamp_variable = { var = SOV_cml_party_base min = 0 max = 100 }
+	cml_check_thresholds = yes
+}
+
+cml_add_oscillation = {
+	add_to_variable = { SOV_cml_oscillation = cml_delta }
+	clamp_variable = { var = SOV_cml_oscillation min = 0 max = 100 }
+	cml_check_thresholds = yes
+}
+
+cml_add_wrongful_verdict = {
+	add_to_variable = { SOV_cml_wrongful_verdicts = 1 }
+}
+
+# Schwellen auf dem Aufschaukeln: je Schwelle einmal pro Kampagne (Flag ..._fired).
+# Bei Aufschaukeln >= threshold_13 führt der verstärkte Weg zu Ereignis 20, sonst zu 13.
+cml_check_thresholds = {
+	if = {
+		limit = {
+			cml_campaign_active = yes
+			check_variable = { SOV_cml_oscillation >= @@threshold_10@@ }
+			NOT = { has_country_flag = SOV_cml_threshold_10_fired }
+		}
+		set_country_flag = SOV_cml_threshold_10_fired
+		country_event = { id = sov_cml.10 }
+	}
+	if = {
+		limit = {
+			cml_campaign_active = yes
+			check_variable = { SOV_cml_oscillation >= @@threshold_11@@ }
+			NOT = { has_country_flag = SOV_cml_threshold_11_fired }
+		}
+		set_country_flag = SOV_cml_threshold_11_fired
+		country_event = { id = sov_cml.11 }
+	}
+	if = {
+		limit = {
+			cml_campaign_active = yes
+			check_variable = { SOV_cml_oscillation >= @@threshold_12@@ }
+			NOT = { has_country_flag = SOV_cml_threshold_12_fired }
+		}
+		set_country_flag = SOV_cml_threshold_12_fired
+		country_event = { id = sov_cml.12 }
+	}
+	if = {
+		limit = {
+			cml_campaign_active = yes
+			check_variable = { SOV_cml_oscillation >= @@threshold_13@@ }
+			NOT = { has_country_flag = SOV_cml_amplified }
+			NOT = { has_country_flag = SOV_cml_threshold_13_fired }
+		}
+		set_country_flag = SOV_cml_threshold_13_fired
+		country_event = { id = sov_cml.13 }
+	}
+	if = {
+		limit = {
+			cml_campaign_active = yes
+			check_variable = { SOV_cml_oscillation >= @@threshold_13@@ }
+			has_country_flag = SOV_cml_amplified
+			NOT = { has_country_flag = SOV_cml_threshold_20_fired }
+		}
+		set_country_flag = SOV_cml_threshold_20_fired
+		country_event = { id = sov_cml.20 }
+	}
+}
+
+# Ende der Kampagne (Fokus 8a, Ereignis 20 A, cml_collapse).
+cml_end_campaign = {
+	remove_dynamic_modifier = { modifier = SOV_cml_feedback_modifier }
+	clr_country_flag = SOV_cml_campaign_active
+	set_variable = { SOV_cml_oscillation = 0 }
+	set_country_flag = SOV_cml_phase1_done
+	add_ideas = SOV_cml_democratic_centralism
+}
+
+# Wirkung von Ereignis 13 und Ereignis 20 B: die Bewegung frisst ihre Basis.
+cml_collapse = {
+	multiply_variable = { var = SOV_cml_party_base value = 0.5 }
+	add_stability = @@e13_a_stab@@
+	add_timed_idea = { idea = SOV_cml_exhausted_movement days = @@spirit_exhausted_days@@ }
+	cml_end_campaign = yes
+}

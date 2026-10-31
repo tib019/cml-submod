@@ -1,0 +1,6 @@
+# Entscheidungskategorien des CML-Submods (AP7 hängt cml_feedback_category an).
+cml_feedback_entry_category = {
+	icon = GFX_decisions_category_political
+	allowed = { original_tag = SOV }
+	visible = { cml_adapter_entry_visible = yes }
+}
