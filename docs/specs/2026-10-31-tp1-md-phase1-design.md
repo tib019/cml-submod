@@ -333,3 +333,4 @@ Belege: `docs/md-referenz/pruefpunkte.md`.
 | P6 | Namespace `sov_cml` ist frei und wird genutzt. |
 | P7 | Staatsoberhaupt per `create_country_leader` statt `promote_character`; kein Charakter-Eintrag. |
 | AP3 | Fokus 8b setzt **zuerst** das Flag `SOV_cml_amplified` und erhöht danach das Aufschaukeln. So führt ein Erreichen von 100 durch 8b zu Ereignis 20, nicht zu 13. Die Rechnung in `tools/sim.py` folgt derselben Reihenfolge. |
+| AP6/AP8 | Ereignis 4 kommt fest `e4_delay_days` (10) Tage nach Fokus 4 statt zufällig nach 7–14 Tagen. Ereignis 6 zeigt die Werte direkt per `[?Variable|0]`, ohne eigene scripted localisation. Der Meinungsmodifikator `cml_capital_controls` zerfällt nicht. |

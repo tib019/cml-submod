@@ -1,0 +1,6 @@
+# Meinungsmodifikator für Ereignis 4 A (Kapitalverkehrskontrollen).
+opinion_modifiers = {
+	cml_capital_controls = {
+		value = @@e4_a_opinion@@
+	}
+}

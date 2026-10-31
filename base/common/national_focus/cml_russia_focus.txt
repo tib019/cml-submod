@@ -1,0 +1,219 @@
+focus_tree = {
+	id = cml_russia_focus
+	country = {
+		factor = 0
+	}
+	default = no
+
+	focus = {
+		id = SOV_cml_open_channels
+		icon = Focus_Socialist_Worker
+		x = 4
+		y = 0
+		cost = @@f2_cost@@
+		available = {
+			cml_adapter_cml_in_power = yes
+			has_country_flag = SOV_cml_path
+		}
+		ai_will_do = {
+			base = 0
+		}
+		completion_reward = {
+			log = "[GetDateText]: [Root.GetName]: Focus SOV_cml_open_channels"
+			set_temp_variable = { cml_delta = @@f2_base@@ }
+			cml_add_party_base = yes
+			set_temp_variable = { cml_delta = @@f2_osc@@ }
+			cml_add_oscillation = yes
+			set_temp_variable = { cml_tmp = @@f2_stab@@ }
+			multiply_temp_variable = { cml_tmp = -1 }
+			add_stability = cml_tmp
+			set_country_flag = SOV_cml_decisions_unlocked
+		}
+	}
+
+	focus = {
+		id = SOV_cml_cadres_before_the_base
+		icon = communist_purge
+		x = 8
+		y = 0
+		cost = @@f3_cost@@
+		available = {
+			cml_adapter_cml_in_power = yes
+			has_country_flag = SOV_cml_path
+		}
+		ai_will_do = {
+			base = 0
+		}
+		completion_reward = {
+			log = "[GetDateText]: [Root.GetName]: Focus SOV_cml_cadres_before_the_base"
+			set_temp_variable = { temp_opinion = @@f3_cadres@@ }
+			multiply_temp_variable = { temp_opinion = -1 }
+			cml_adapter_cadres_opinion = yes
+			set_temp_variable = { cml_delta = @@f3_base@@ }
+			cml_add_party_base = yes
+			set_temp_variable = { cml_delta = @@f3_osc@@ }
+			cml_add_oscillation = yes
+			cml_adapter_reduce_corruption = yes
+			country_event = { id = sov_cml.3 }
+		}
+	}
+
+	focus = {
+		id = SOV_cml_cut_oligarch_ties
+		icon = sov_anti_oligarch
+		x = 6
+		y = 1
+		cost = @@f4_cost@@
+		prerequisite = { focus = SOV_cml_cadres_before_the_base }
+		available = {
+			cml_adapter_cml_in_power = yes
+			has_country_flag = SOV_cml_path
+		}
+		ai_will_do = {
+			base = 0
+		}
+		completion_reward = {
+			log = "[GetDateText]: [Root.GetName]: Focus SOV_cml_cut_oligarch_ties"
+			cml_adapter_purge_oligarchs = yes
+			set_temp_variable = { cml_treasury_change = @@f4_treasury@@ }
+			cml_adapter_treasury = yes
+			cml_adapter_reduce_corruption = yes
+			set_temp_variable = { cml_tmp = @@f4_stab@@ }
+			multiply_temp_variable = { cml_tmp = -1 }
+			add_stability = cml_tmp
+			set_temp_variable = { cml_delta = @@f4_osc@@ }
+			cml_add_oscillation = yes
+			country_event = { id = sov_cml.4 days = @@e4_delay_days@@ }
+		}
+	}
+
+	focus = {
+		id = SOV_cml_untie_siloviki
+		icon = communist_spies
+		x = 10
+		y = 1
+		cost = @@f5_cost@@
+		prerequisite = { focus = SOV_cml_cadres_before_the_base }
+		available = {
+			cml_adapter_cml_in_power = yes
+			has_country_flag = SOV_cml_path
+		}
+		ai_will_do = {
+			base = 0
+		}
+		completion_reward = {
+			log = "[GetDateText]: [Root.GetName]: Focus SOV_cml_untie_siloviki"
+			set_temp_variable = { temp_opinion = @@f5_siloviki@@ }
+			multiply_temp_variable = { temp_opinion = -1 }
+			cml_adapter_siloviki_opinion = yes
+			set_temp_variable = { cml_delta = @@f5_base@@ }
+			cml_add_party_base = yes
+			set_temp_variable = { cml_delta = @@f5_osc@@ }
+			cml_add_oscillation = yes
+			add_political_power = @@f5_pp@@
+			set_temp_variable_to_random = { var = cml_roll min = 0 max = 100 integer = yes }
+			if = {
+				limit = { check_variable = { cml_roll < @@f5_event_chance@@ } }
+				country_event = { id = sov_cml.5 days = 1 random_days = 29 }
+		}
+		}
+	}
+
+	focus = {
+		id = SOV_cml_new_cadres
+		icon = Focus_Socialist_Worker2
+		x = 7
+		y = 2
+		cost = @@f6_cost@@
+		prerequisite = { focus = SOV_cml_open_channels }
+		prerequisite = { focus = SOV_cml_cut_oligarch_ties focus = SOV_cml_untie_siloviki }
+		available = {
+			cml_adapter_cml_in_power = yes
+			has_country_flag = SOV_cml_path
+		}
+		ai_will_do = {
+			base = 0
+		}
+		completion_reward = {
+			log = "[GetDateText]: [Root.GetName]: Focus SOV_cml_new_cadres"
+			set_temp_variable = { cml_delta = @@f6_base@@ }
+			cml_add_party_base = yes
+			set_temp_variable = { cml_delta = @@f6_osc_reduce@@ }
+			multiply_temp_variable = { cml_delta = -1 }
+			cml_add_oscillation = yes
+			set_temp_variable = { temp_opinion = @@f6_cadres@@ }
+			cml_adapter_cadres_opinion = yes
+			set_country_flag = SOV_cml_cadre_school_discount
+		}
+	}
+
+	focus = {
+		id = SOV_cml_centre_replies
+		icon = revolutionary_government
+		x = 7
+		y = 3
+		cost = @@f7_cost@@
+		prerequisite = { focus = SOV_cml_new_cadres }
+		available = {
+			cml_adapter_cml_in_power = yes
+			has_country_flag = SOV_cml_path
+		}
+		ai_will_do = {
+			base = 0
+		}
+		completion_reward = {
+			log = "[GetDateText]: [Root.GetName]: Focus SOV_cml_centre_replies"
+			cml_adapter_reduce_corruption = yes
+			country_event = { id = sov_cml.6 }
+		}
+	}
+
+	focus = {
+		id = SOV_cml_close_the_loop
+		icon = industry_communism
+		x = 5
+		y = 4
+		cost = @@f8a_cost@@
+		prerequisite = { focus = SOV_cml_centre_replies }
+		mutually_exclusive = { focus = SOV_cml_amplify_the_feedback }
+		available = {
+			cml_adapter_cml_in_power = yes
+			has_country_flag = SOV_cml_path
+			check_variable = { SOV_cml_oscillation < @@f8a_osc_max@@ }
+		}
+		ai_will_do = {
+			base = 0
+		}
+		completion_reward = {
+			log = "[GetDateText]: [Root.GetName]: Focus SOV_cml_close_the_loop"
+			set_temp_variable = { cml_delta = @@f8a_base@@ }
+			cml_add_party_base = yes
+			cml_end_campaign = yes
+		}
+	}
+
+	focus = {
+		id = SOV_cml_amplify_the_feedback
+		icon = Generic_Socialist_Revolution
+		x = 9
+		y = 4
+		cost = @@f8b_cost@@
+		prerequisite = { focus = SOV_cml_centre_replies }
+		mutually_exclusive = { focus = SOV_cml_close_the_loop }
+		available = {
+			cml_adapter_cml_in_power = yes
+			has_country_flag = SOV_cml_path
+		}
+		ai_will_do = {
+			base = 0
+		}
+		completion_reward = {
+			log = "[GetDateText]: [Root.GetName]: Focus SOV_cml_amplify_the_feedback"
+			set_country_flag = SOV_cml_amplified
+			set_temp_variable = { cml_delta = @@f8b_base@@ }
+			cml_add_party_base = yes
+			set_temp_variable = { cml_delta = @@f8b_osc@@ }
+			cml_add_oscillation = yes
+		}
+	}
+}
