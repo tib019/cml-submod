@@ -1,0 +1,141 @@
+# Einzige Quelle aller Zahlen (Spec Abschnitt 5.6 und 6). Skripte nutzen @@name@@.
+# Fokuskosten sind Wochen (HOI4: cost x 7 Tage). Positive Kosten-/Mengenwerte
+# bleiben positiv, die Skripte setzen das Vorzeichen; Ereigniswerte tragen es im Wert.
+
+# --- Einstieg ---
+entry_pp = 50
+entry_days = 21
+event2_delay_days = 14
+base_start = 20
+osc_start = 5
+
+# --- Schleife ---
+monthly_base = 1
+monthly_osc = 2
+monthly_osc_amplified = 4
+amplify_duration_days = 180
+threshold_10 = 25
+threshold_11 = 50
+threshold_12 = 75
+threshold_13 = 100
+
+# --- Fokusse ---
+f2_cost = 3
+f2_base = 8
+f2_osc = 5
+f2_stab = 0.02
+f3_cost = 5
+f3_cadres = 20
+f3_base = 10
+f3_osc = 10
+f4_cost = 5
+f4_treasury = 10
+f4_stab = 0.03
+f4_osc = 5
+unions_after_swap = 15
+f5_cost = 5
+f5_siloviki = 25
+f5_base = 5
+f5_osc = 10
+f5_pp = 50
+f5_event_chance = 50
+f6_cost = 5
+f6_base = 15
+f6_osc_reduce = 5
+f6_cadres = 15
+f7_cost = 3
+f8a_cost = 7
+f8a_osc_max = 60
+f8a_base = 10
+f8b_cost = 5
+f8b_base = 20
+f8b_osc = 20
+
+# --- Geister ---
+spirit_feedback_stab = 0.05
+spirit_feedback_pp = 0.15
+spirit_feedback_drift_def = 0.20
+spirit_feedback_comm_drift = 0.03
+spirit_dc_stab = 0.10
+spirit_dc_pp = 0.10
+spirit_exhausted_days = 365
+spirit_exhausted_stab = 0.10
+spirit_exhausted_factory = 0.05
+spirit_exhausted_pp = 0.10
+spirit_cult_stab = 0.05
+spirit_standstill_days = 90
+spirit_standstill_factory = 0.10
+spirit_standstill_cg = 0.05
+
+# --- Entscheidungen ---
+review_pp = 25
+review_days = 30
+review_cooldown = 30
+review_wrong_base = 20
+review_wrong_per_osc = 0.5
+review_hit_base = 3
+review_hit_cadres = 5
+review_hit_corruption_chance = 25
+review_wrong_osc = 5
+review_wrong_stab = 0.01
+damp_pp = 50
+damp_cooldown = 60
+damp_osc = 10
+damp_base = 3
+assemblies_treasury = 2
+assemblies_cooldown = 45
+assemblies_base = 5
+assemblies_osc = 3
+assemblies_unions = 5
+rehab_pp = 30
+rehab_base = 5
+rehab_osc = 5
+endcult_pp = 75
+endcult_stab = 0.05
+endcult_base = 5
+
+# --- Ereignisse: e<nr>_<option>_<wert>, Vorzeichen im Wert ---
+# 1 Brief an das Zentralkomitee
+e1_a_base = 5
+e1_a_osc = 3
+e1_b_osc = -3
+e1_b_pp = 25
+# 2 Der Generalsekretaer unter Druck
+e2_a_stab = 0.03
+e2_a_base = -3
+e2_b_base = 8
+e2_b_stab = -0.05
+# 3 Der Fall des Gebietssekretaers
+e3_a_base = 5
+e3_a_osc = 5
+e3_b_pp = -25
+e3_b_osc = -3
+# 4 Kapitalflucht (Verzoegerung nach Fokus 4 fuer sim.py)
+e4_delay_days = 10
+e4_a_treasury = -3
+e4_a_opinion = -10
+e4_b_treasury = -8
+e4_b_stab = 0.02
+# 5 Gegenschlag der Dienste
+e5_a_osc = 10
+e5_a_stab = -0.05
+e5_a_siloviki = -10
+e5_b_pp = -50
+e5_b_siloviki = 10
+e5_b_base = -5
+# 10 Fraktionen in den Komitees
+e10_a_pp = -50
+e10_a_osc = -10
+e10_b_base = 5
+e10_b_osc = 5
+# 11 Ein Gesicht fuer die Bewegung
+e11_a_base = -5
+e11_a_osc = -15
+e11_a_stab = -0.03
+e11_b_osc = 10
+# 12 Stillstand in den Werken
+e12_a_base = -10
+# 13 Die Bewegung frisst ihre Basis
+e13_a_stab = -0.10
+# 20 Die Korrektur
+e20_a_base = -15

@@ -332,4 +332,4 @@ Belege: `docs/md-referenz/pruefpunkte.md`.
 | P5 | Abhängigkeit auf beide MD-Namen, `supported_version = "1.19.*"`. Der Tag v2.0.3 trägt in `descriptor.mod` die Version 2.0.2. |
 | P6 | Namespace `sov_cml` ist frei und wird genutzt. |
 | P7 | Staatsoberhaupt per `create_country_leader` statt `promote_character`; kein Charakter-Eintrag. |
-
+| AP3 | Fokus 8b setzt **zuerst** das Flag `SOV_cml_amplified` und erhöht danach das Aufschaukeln. So führt ein Erreichen von 100 durch 8b zu Ereignis 20, nicht zu 13. Die Rechnung in `tools/sim.py` folgt derselben Reihenfolge. |
