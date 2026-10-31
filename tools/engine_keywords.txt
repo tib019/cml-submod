@@ -1,0 +1,29 @@
+# HOI4-Engine-Schlüsselwörter, die mit "= yes" vorkommen, aber kein MD-scripted effect/trigger sind.
+# Eine pro Zeile, # Kommentare erlaubt. Ergänzung nur mit Begründung im Commit.
+hidden
+is_triggered_only
+fire_only_once
+is_good
+allowed_civil_war
+cancel_if_not_visible
+keep_completed
+cancel_if_invalid
+continue_if_invalid
+bypass_if_unavailable
+available_if_capitulated
+remove_prerequisite
+integer
+update_party_name
+major
+fire_for_sender
+is_triggered
+always
+tag
+default
+mtth
+ai
+is_major
+has_war
+is_ai
+is_puppet
+exists

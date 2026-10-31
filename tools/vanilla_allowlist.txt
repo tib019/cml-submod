@@ -1,0 +1,4 @@
+# IDs des HOI4-Grundspiels (Ideen, Sprites, Effekte, Trigger ...), die nicht im MD-Index stehen.
+# Eine ID pro Zeile; hinter jeder ID ein kurzer Grund als Kommentar, z. B.:
+#   some_vanilla_id  # Grund: Grundspiel-Trigger, genutzt in cml_foo
+# Erstbefüllung leer; Inhaltspakete ergänzen nur bei Bedarf.
