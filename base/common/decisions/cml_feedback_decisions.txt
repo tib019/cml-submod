@@ -1,0 +1,158 @@
+# Die Große Rückkopplung: fünf Entscheidungen (Spec 5.5).
+# Abzüge: Werte stehen positiv in werte.toml, das Vorzeichen setzt das Skript.
+cml_feedback_category = {
+
+	# Kader überprüfen: Zufallsprobe, Fehlurteil wird mit dem Aufschaukeln wahrscheinlicher.
+	SOV_cml_review_cadres = {
+		icon = GFX_decision_generic_arrest
+		cost = @@review_pp@@
+		days_remove = @@review_days@@
+		days_re_enable = @@review_cooldown@@
+
+		visible = {
+			cml_campaign_active = yes
+		}
+
+		# Endet die Kampagne während der Prüfung, verfällt sie ohne Wirkung.
+		cancel_trigger = {
+			NOT = { cml_campaign_active = yes }
+		}
+
+		complete_effect = {
+			log = "[GetDateText]: [Root.GetName]: SOV_cml_review_cadres begonnen"
+		}
+
+		remove_effect = {
+			log = "[GetDateText]: [Root.GetName]: SOV_cml_review_cadres abgeschlossen"
+			set_temp_variable_to_random = { var = cml_roll min = 0 max = 100 integer = yes }
+			set_temp_variable = { cml_wrong_threshold = SOV_cml_oscillation }
+			multiply_temp_variable = { cml_wrong_threshold = @@review_wrong_per_osc@@ }
+			add_to_temp_variable = { cml_wrong_threshold = @@review_wrong_base@@ }
+			if = {
+				limit = { check_variable = { cml_roll < cml_wrong_threshold } }
+				# Fehlurteil
+				set_temp_variable = { cml_delta = @@review_wrong_osc@@ }
+				cml_add_oscillation = yes
+				set_temp_variable = { cml_tmp = @@review_wrong_stab@@ }
+				multiply_temp_variable = { cml_tmp = -1 }
+				add_stability = cml_tmp
+				cml_add_wrongful_verdict = yes
+			}
+			else = {
+				# Treffer
+				set_temp_variable = { cml_delta = @@review_hit_base@@ }
+				cml_add_party_base = yes
+				set_temp_variable = { temp_opinion = @@review_hit_cadres@@ }
+				multiply_temp_variable = { temp_opinion = -1 }
+				cml_adapter_cadres_opinion = yes
+				set_temp_variable_to_random = { var = cml_roll2 min = 0 max = 100 integer = yes }
+				if = {
+					limit = { check_variable = { cml_roll2 < @@review_hit_corruption_chance@@ } }
+					cml_adapter_reduce_corruption = yes
+				}
+			}
+		}
+
+		ai_will_do = { base = 0 }
+	}
+
+	# Rückkopplung dämpfen: Aufschaukeln und Parteibasis sinken.
+	SOV_cml_damp_the_feedback = {
+		icon = GFX_decision_generic_political_discourse
+		cost = @@damp_pp@@
+		days_re_enable = @@damp_cooldown@@
+
+		visible = {
+			cml_campaign_active = yes
+		}
+
+		complete_effect = {
+			log = "[GetDateText]: [Root.GetName]: SOV_cml_damp_the_feedback"
+			set_temp_variable = { cml_delta = @@damp_osc@@ }
+			multiply_temp_variable = { cml_delta = -1 }
+			cml_add_oscillation = yes
+			set_temp_variable = { cml_delta = @@damp_base@@ }
+			multiply_temp_variable = { cml_delta = -1 }
+			cml_add_party_base = yes
+		}
+
+		ai_will_do = { base = 0 }
+	}
+
+	# Versammlungen in den Betrieben: kostet Geld aus der Staatskasse.
+	SOV_cml_workplace_assemblies = {
+		icon = GFX_decision_generic_political_rally
+		days_re_enable = @@assemblies_cooldown@@
+
+		visible = {
+			cml_campaign_active = yes
+		}
+
+		# treasury_higher_than_2 ist der MD-Trigger zu assemblies_treasury = 2 (Test prüft die Übereinstimmung).
+		available = {
+			treasury_higher_than_2 = yes
+		}
+
+		complete_effect = {
+			log = "[GetDateText]: [Root.GetName]: SOV_cml_workplace_assemblies"
+			set_temp_variable = { cml_treasury_change = @@assemblies_treasury@@ }
+			multiply_temp_variable = { cml_treasury_change = -1 }
+			cml_adapter_treasury = yes
+			set_temp_variable = { cml_delta = @@assemblies_base@@ }
+			cml_add_party_base = yes
+			set_temp_variable = { cml_delta = @@assemblies_osc@@ }
+			cml_add_oscillation = yes
+			set_temp_variable = { temp_opinion = @@assemblies_unions@@ }
+			cml_adapter_unions_opinion = yes
+		}
+
+		ai_will_do = { base = 0 }
+	}
+
+	# Rehabilitierung: macht Fehlurteile gut.
+	SOV_cml_rehabilitation = {
+		icon = GFX_decision_generic_political_discourse
+		cost = @@rehab_pp@@
+
+		visible = {
+			cml_campaign_active = yes
+			check_variable = { SOV_cml_wrongful_verdicts > 2 }
+		}
+
+		complete_effect = {
+			log = "[GetDateText]: [Root.GetName]: SOV_cml_rehabilitation"
+			set_temp_variable = { cml_delta = @@rehab_base@@ }
+			cml_add_party_base = yes
+			set_temp_variable = { cml_delta = @@rehab_osc@@ }
+			multiply_temp_variable = { cml_delta = -1 }
+			cml_add_oscillation = yes
+			subtract_from_variable = { SOV_cml_wrongful_verdicts = 3 }
+		}
+
+		ai_will_do = { base = 0 }
+	}
+
+	# Den Kult beenden: bleibt nach Kampagnenende sichtbar, solange der Kult besteht.
+	SOV_cml_end_the_cult = {
+		icon = GFX_decision_generic_brainwash
+		cost = @@endcult_pp@@
+		fire_only_once = yes
+
+		visible = {
+			has_country_flag = SOV_cml_leader_cult
+		}
+
+		complete_effect = {
+			log = "[GetDateText]: [Root.GetName]: SOV_cml_end_the_cult"
+			remove_ideas = SOV_cml_leader_cult
+			clr_country_flag = SOV_cml_leader_cult
+			set_temp_variable = { cml_tmp = @@endcult_stab@@ }
+			multiply_temp_variable = { cml_tmp = -1 }
+			add_stability = cml_tmp
+			set_temp_variable = { cml_delta = @@endcult_base@@ }
+			cml_add_party_base = yes
+		}
+
+		ai_will_do = { base = 0 }
+	}
+}

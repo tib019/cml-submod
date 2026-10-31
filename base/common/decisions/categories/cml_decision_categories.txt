@@ -4,3 +4,19 @@ cml_feedback_entry_category = {
 	allowed = { original_tag = SOV }
 	visible = { cml_adapter_entry_visible = yes }
 }
+
+# Die Große Rückkopplung (Spec 5.5): sichtbar während der Kampagne; "Den Kult beenden"
+# bleibt über das Kult-Flag auch nach Kampagnenende erreichbar.
+cml_feedback_category = {
+	icon = GFX_decisions_category_political
+	allowed = { original_tag = SOV }
+	visible = {
+		OR = {
+			AND = {
+				has_country_flag = SOV_cml_decisions_unlocked
+				cml_campaign_active = yes
+			}
+			has_country_flag = SOV_cml_leader_cult
+		}
+	}
+}

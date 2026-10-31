@@ -1,0 +1,13 @@
+﻿l_english:
+ cml_feedback_category:0 "The Great Feedback"
+ cml_feedback_category_desc:0 "The movement acts back on its own party. Until the loop is closed it needs oversight and damping."
+ SOV_cml_review_cadres:0 "Review the Cadres"
+ SOV_cml_review_cadres_desc:0 "Commissions go through personnel files. The hotter the movement runs, the more often they judge wrongly."
+ SOV_cml_damp_the_feedback:0 "Damp the Feedback"
+ SOV_cml_damp_the_feedback_desc:0 "Committees are bound to procedure. Less escalation, less momentum."
+ SOV_cml_workplace_assemblies:0 "Workplace Assemblies"
+ SOV_cml_workplace_assemblies_desc:0 "The base speaks where it works. Costs money, strengthens party and unions."
+ SOV_cml_rehabilitation:0 "Rehabilitation"
+ SOV_cml_rehabilitation_desc:0 "The party admits its wrongful verdicts and wins back trust."
+ SOV_cml_end_the_cult:0 "End the Cult"
+ SOV_cml_end_the_cult_desc:0 "The portraits come down and criticism from below returns."

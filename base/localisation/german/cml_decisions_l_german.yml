@@ -1,0 +1,13 @@
+﻿l_german:
+ cml_feedback_category:0 "Die Große Rückkopplung"
+ cml_feedback_category_desc:0 "Die Bewegung wirkt auf die eigene Partei zurück. Solange der Regelkreis nicht geschlossen ist, braucht sie Aufsicht, Dämpfung und den Rückhalt der Betriebe, sonst kippt die Korrektur in Fraktionskampf und Kult."
+ SOV_cml_review_cadres:0 "Kader überprüfen"
+ SOV_cml_review_cadres_desc:0 "Die Basis fordert Rechenschaft, und Kommissionen gehen die Personalakten durch. Mancher Fall ist eindeutig, mancher ein Fehlurteil, und je heißer die Bewegung läuft, desto öfter trifft es die Falschen. Ein Fehlurteil kostet Stabilität und heizt das Aufschaukeln an; ein Treffer stärkt die Basis, verprellt aber die alten Kader und räumt gelegentlich ein Stück Korruption ab."
+ SOV_cml_damp_the_feedback:0 "Rückkopplung dämpfen"
+ SOV_cml_damp_the_feedback_desc:0 "Die Zentrale mahnt zur Besonnenheit: Komitees werden an Verfahren gebunden, Anklagen geprüft statt gerufen. Das nimmt dem Aufschaukeln Fahrt, bremst aber auch den Elan der Basis."
+ SOV_cml_workplace_assemblies:0 "Versammlungen in den Betrieben"
+ SOV_cml_workplace_assemblies_desc:0 "Freigestellte Schichten, Säle, Protokolle: Die Basis spricht dort, wo sie arbeitet. Das kostet Geld und Arbeitszeit, stärkt Partei und Gewerkschaften, erhitzt aber auch die Debatte."
+ SOV_cml_rehabilitation:0 "Rehabilitierung"
+ SOV_cml_rehabilitation_desc:0 "Zu viele Urteile haben sich als falsch erwiesen. Die Partei räumt Fehler ein, nimmt Betroffene wieder auf und gewinnt dadurch Vertrauen zurück. Drei Fehlurteile werden abgetragen."
+ SOV_cml_end_the_cult:0 "Den Kult beenden"
+ SOV_cml_end_the_cult_desc:0 "Das Gesicht der Bewegung hängt in jedem Büro. Die Partei nimmt die Bilder ab und führt Kritik von unten wieder ein. Das kostet kurzfristig Stabilität, gibt der Basis aber ihre Stimme zurück."
