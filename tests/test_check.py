@@ -496,6 +496,20 @@ class TestRule9(CheckBase):
         files["base/localisation/english/cml_extra_l_english.yml"] = loc("english", {"extra_k": "x"})
         self.assertNotIn(9, self.rules(self.run_check(files)))
 
+    def test_r9_opinion_modifier_ok(self):
+        files = good_files()
+        files["base/common/opinion_modifiers/cml_opinion_modifiers.txt"] = "opinion_modifiers = { cml_op = { value = 5 } }\n"
+        for p in (self.GER, self.ENG):
+            files[p] = files[p] + ' cml_op:0 "x"\n'
+        self.assertNotIn(9, self.rules(self.run_check(files)))
+
+    def test_r9_opinion_modifier_fail(self):
+        files = good_files()
+        files["base/common/opinion_modifiers/cml_opinion_modifiers.txt"] = "opinion_modifiers = { cml_op = { value = 5 } }\n"
+        f = [x for x in self.run_check(files) if x.rule == 9]
+        self.assertEqual(len(f), 1)
+        self.assertIn("cml_op", f[0].msg)
+
     def test_loc_wrong_header(self):
         files = good_files()
         files[self.GER] = files[self.GER].replace("l_german:", "l_english:", 1)

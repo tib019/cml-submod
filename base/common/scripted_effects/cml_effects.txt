@@ -18,45 +18,10 @@ cml_add_wrongful_verdict = {
 }
 
 # Schwellen auf dem Aufschaukeln: je Schwelle einmal pro Kampagne (Flag ..._fired).
-# Bei Aufschaukeln >= threshold_13 führt der verstärkte Weg zu Ereignis 20, sonst zu 13.
+# Nur die höchste erreichte Schwelle feuert (if/else_if von oben); sie setzt die
+# niedrigeren fired-Flags mit. Bei Aufschaukeln >= threshold_13 führt der verstärkte
+# Weg zu Ereignis 20, sonst zu 13.
 cml_check_thresholds = {
-	if = {
-		limit = {
-			cml_campaign_active = yes
-			check_variable = { SOV_cml_oscillation >= @@threshold_10@@ }
-			NOT = { has_country_flag = SOV_cml_threshold_10_fired }
-		}
-		set_country_flag = SOV_cml_threshold_10_fired
-		country_event = { id = sov_cml.10 }
-	}
-	if = {
-		limit = {
-			cml_campaign_active = yes
-			check_variable = { SOV_cml_oscillation >= @@threshold_11@@ }
-			NOT = { has_country_flag = SOV_cml_threshold_11_fired }
-		}
-		set_country_flag = SOV_cml_threshold_11_fired
-		country_event = { id = sov_cml.11 }
-	}
-	if = {
-		limit = {
-			cml_campaign_active = yes
-			check_variable = { SOV_cml_oscillation >= @@threshold_12@@ }
-			NOT = { has_country_flag = SOV_cml_threshold_12_fired }
-		}
-		set_country_flag = SOV_cml_threshold_12_fired
-		country_event = { id = sov_cml.12 }
-	}
-	if = {
-		limit = {
-			cml_campaign_active = yes
-			check_variable = { SOV_cml_oscillation >= @@threshold_13@@ }
-			NOT = { has_country_flag = SOV_cml_amplified }
-			NOT = { has_country_flag = SOV_cml_threshold_13_fired }
-		}
-		set_country_flag = SOV_cml_threshold_13_fired
-		country_event = { id = sov_cml.13 }
-	}
 	if = {
 		limit = {
 			cml_campaign_active = yes
@@ -64,8 +29,54 @@ cml_check_thresholds = {
 			has_country_flag = SOV_cml_amplified
 			NOT = { has_country_flag = SOV_cml_threshold_20_fired }
 		}
+		set_country_flag = SOV_cml_threshold_10_fired
+		set_country_flag = SOV_cml_threshold_11_fired
+		set_country_flag = SOV_cml_threshold_12_fired
 		set_country_flag = SOV_cml_threshold_20_fired
 		country_event = { id = sov_cml.20 }
+	}
+	else_if = {
+		limit = {
+			cml_campaign_active = yes
+			check_variable = { SOV_cml_oscillation >= @@threshold_13@@ }
+			NOT = { has_country_flag = SOV_cml_amplified }
+			NOT = { has_country_flag = SOV_cml_threshold_13_fired }
+		}
+		set_country_flag = SOV_cml_threshold_10_fired
+		set_country_flag = SOV_cml_threshold_11_fired
+		set_country_flag = SOV_cml_threshold_12_fired
+		set_country_flag = SOV_cml_threshold_13_fired
+		country_event = { id = sov_cml.13 }
+	}
+	else_if = {
+		limit = {
+			cml_campaign_active = yes
+			check_variable = { SOV_cml_oscillation >= @@threshold_12@@ }
+			NOT = { has_country_flag = SOV_cml_threshold_12_fired }
+		}
+		set_country_flag = SOV_cml_threshold_10_fired
+		set_country_flag = SOV_cml_threshold_11_fired
+		set_country_flag = SOV_cml_threshold_12_fired
+		country_event = { id = sov_cml.12 }
+	}
+	else_if = {
+		limit = {
+			cml_campaign_active = yes
+			check_variable = { SOV_cml_oscillation >= @@threshold_11@@ }
+			NOT = { has_country_flag = SOV_cml_threshold_11_fired }
+		}
+		set_country_flag = SOV_cml_threshold_10_fired
+		set_country_flag = SOV_cml_threshold_11_fired
+		country_event = { id = sov_cml.11 }
+	}
+	else_if = {
+		limit = {
+			cml_campaign_active = yes
+			check_variable = { SOV_cml_oscillation >= @@threshold_10@@ }
+			NOT = { has_country_flag = SOV_cml_threshold_10_fired }
+		}
+		set_country_flag = SOV_cml_threshold_10_fired
+		country_event = { id = sov_cml.10 }
 	}
 }
 

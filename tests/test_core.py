@@ -78,9 +78,11 @@ class TestEntry(unittest.TestCase):
         limit = child(guard, "limit")
         neg = child(limit, "NOT")
         self.assertTrue(has_child(neg, "cml_adapter_entry_blocked", "yes"))
+        self.assertTrue(has_child(limit, "cml_adapter_cml_in_power", "yes"))
         trees = [n for n, _ in all_nodes(kids(remove)) if n.key == "load_focus_tree"]
         self.assertEqual(len(trees), 1)
         self.assertEqual(val(child(trees[0], "tree")), "cml_russia_focus")
+        self.assertEqual(val(child(trees[0], "keep_completed")), "yes")
         self.assertTrue(any(n is trees[0] for n, _ in all_nodes(kids(guard))))
 
     def test_entry_costs(self) -> None:
@@ -140,10 +142,11 @@ class TestEffects(unittest.TestCase):
         self.assertEqual(val(child(add, "SOV_cml_wrongful_verdicts")), "1")
 
     def _threshold_branches(self) -> list[Node]:
-        return [c for c in kids(effect("cml_check_thresholds")) if c.key == "if"]
+        return [c for c in kids(effect("cml_check_thresholds")) if c.key in ("if", "else_if")]
 
     def test_thresholds_once(self) -> None:
         branches = self._threshold_branches()
+        self.assertEqual([b.key for b in branches], ["if"] + ["else_if"] * 4)
         fired = set()
         for b in branches:
             limit = child(b, "limit")
@@ -156,6 +159,23 @@ class TestEffects(unittest.TestCase):
             self.assertTrue(has_child(b, "set_country_flag", flag), flag)
             fired.add(flag)
         self.assertEqual(fired, {f"SOV_cml_threshold_{n}_fired" for n in (10, 11, 12, 13, 20)})
+
+    def test_threshold_highest_only(self) -> None:
+        by_event: dict[str, Node] = {}
+        for b in self._threshold_branches():
+            for c in kids(b):
+                if c.key == "country_event":
+                    by_event[val(child(c, "id"))] = b
+        lower = {"sov_cml.20": (10, 11, 12), "sov_cml.13": (10, 11, 12),
+                 "sov_cml.12": (10, 11), "sov_cml.11": (10,), "sov_cml.10": ()}
+        for eid, lows in lower.items():
+            b = by_event[eid]
+            for n in lows:
+                self.assertTrue(has_child(b, "set_country_flag", f"SOV_cml_threshold_{n}_fired"), (eid, n))
+            events = [val(child(c, "id")) for c in kids(b) if c.key == "country_event"]
+            self.assertEqual(events, [eid])
+        order = [val(child(c, "id")) for b in self._threshold_branches() for c in kids(b) if c.key == "country_event"]
+        self.assertEqual(order, ["sov_cml.20", "sov_cml.13", "sov_cml.12", "sov_cml.11", "sov_cml.10"])
 
     def test_threshold_routing(self) -> None:
         by_event: dict[str, Node] = {}

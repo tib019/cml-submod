@@ -9,14 +9,18 @@ cml_feedback_entry_category = {
 			cml_adapter_cml_in_power = yes
 		}
 
-		# Wählt jemand während der Laufzeit eine Gabelung, endet die Entscheidung ohne Wirkung.
+		# Wählt jemand während der Laufzeit eine Gabelung oder regieren die Kommunisten bei Ablauf
+		# nicht mehr, endet die Entscheidung ohne Wirkung.
 		cancel_trigger = {
 			cml_adapter_entry_blocked = yes
 		}
 
 		remove_effect = {
 			if = {
-				limit = { NOT = { cml_adapter_entry_blocked = yes } }
+				limit = {
+					NOT = { cml_adapter_entry_blocked = yes }
+					cml_adapter_cml_in_power = yes
+				}
 				set_country_flag = SOV_cml_path
 				set_variable = { SOV_cml_party_base = @@base_start@@ }
 				set_variable = { SOV_cml_oscillation = @@osc_start@@ }
@@ -25,7 +29,7 @@ cml_feedback_entry_category = {
 				set_country_flag = SOV_cml_campaign_active
 				cml_adapter_install_cadres = yes
 				cml_adapter_rename_party = yes
-				load_focus_tree = { tree = cml_russia_focus keep_completed = no }
+				load_focus_tree = { tree = cml_russia_focus keep_completed = yes }
 				country_event = { id = sov_cml.1 }
 				country_event = { id = sov_cml.2 days = @@event2_delay_days@@ }
 				country_event = { id = sov_cml.100 days = 30 }

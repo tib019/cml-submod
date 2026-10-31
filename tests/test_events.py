@@ -1,6 +1,7 @@
 """Tests für AP8: Ereignisse (sov_cml.1-6, 10-13, 20) und Meinungsmodifikator."""
 from __future__ import annotations
 
+import json
 import re
 import unittest
 from pathlib import Path
@@ -76,6 +77,17 @@ class EventTests(unittest.TestCase):
     def test_no_fired_flags_set_by_events(self) -> None:
         text = EVENTS.read_text(encoding="utf-8")
         self.assertNotIn("_fired", text)
+
+    def test_event2_has_picture(self) -> None:
+        pic = [c.value for c in kids(events()["sov_cml.2"]) if c.key == "picture"]
+        self.assertEqual(len(pic), 1)
+        self.assertRegex(pic[0], r"^GFX_report_event_")
+        self.assertIn(pic[0], json.loads((ROOT / "tools/md_index.json").read_text(encoding="utf-8"))["sprites"])
+
+    def test_capital_controls_localised(self) -> None:
+        for path in (LOC_DE, LOC_EN):
+            text = path.read_text(encoding="utf-8-sig")
+            self.assertRegex(text, r"(?m)^ cml_capital_controls:\d* \"", path.name)
 
     def test_capital_controls(self) -> None:
         mod = [n for n in parse_file(OPINION)][0]

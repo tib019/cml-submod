@@ -68,6 +68,15 @@ class TestPaths(unittest.TestCase):
         r = sim.simulate("nichts", v)
         self.assertEqual(sorted(r.fired & {10, 11, 12, 13}), [10, 11, 12, 13])
 
+    def test_jump_fires_only_highest(self):
+        sm = sim._Sim(sim.PATHS["nichts"], dict(self.v))
+        sm.s.osc = self.v["threshold_12"]
+        sm.thresholds()
+        self.assertEqual(sm.s.fired, {12})
+        self.assertEqual(sm.s.flags, {10, 11, 12})
+        sm.thresholds()
+        self.assertEqual(sm.s.fired, {12})
+
     def test_input_values_not_mutated(self):
         v = dict(self.v)
         before = dict(v)

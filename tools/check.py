@@ -446,6 +446,9 @@ class Checker:
         for i, (p, l) in self.defs["decision"].items():
             need += [(i, p, l), (i + "_desc", p, l)]
         for rel, nodes in self.trees.items():
+            if self.sub(rel).startswith("common/opinion_modifiers/"):
+                need += [(m.key, rel, m.line) for n in nodes if n.key == "opinion_modifiers"
+                         for m in blocks_of(n.value if isinstance(n.value, list) else [])]
             if self.sub(rel).startswith("events/"):
                 for n in nodes:
                     if n.key in EVENT_KEYS and isinstance(n.value, list):

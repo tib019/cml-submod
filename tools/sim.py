@@ -23,6 +23,7 @@ class State:
     wrong: float = 0
     month: float = 0.0
     fired: set[int] = field(default_factory=set)
+    flags: set[int] = field(default_factory=set)  # fired-Flags (10-13, 20), auch von Spruengen mitgesetzt
     ended: bool = False
 
 
@@ -123,17 +124,22 @@ class _Sim:
         self.thresholds()
 
     def thresholds(self) -> None:
+        """Wie cml_check_thresholds: nur die hoechste erreichte Schwelle feuert,
+        die niedrigeren fired-Flags werden mitgesetzt."""
         v, s = self.v, self.s
-        changed = True
-        while changed and not s.ended:
-            changed = False
-            for n in (10, 11, 12, 13):
-                n_eff = 20 if (n == 13 and self.amplified) else n
-                if n_eff in s.fired or s.osc < v[f"threshold_{n}"]:
-                    continue
-                self.event(n_eff)
-                changed = True
-                break
+        if s.ended:
+            return
+        chain = ((20, 13, self.amplified), (13, 13, not self.amplified),
+                 (12, 12, True), (11, 11, True), (10, 10, True))
+        for ev, thr, active in chain:
+            if not active or s.osc < v[f"threshold_{thr}"]:
+                continue
+            if ev in s.flags:
+                continue
+            s.flags.add(ev)
+            s.flags.update(n for n in (10, 11, 12) if n < ev)
+            self.event(ev)
+            return
 
     def opt(self, n: int) -> str:
         return self.p.options.get(n, "a")

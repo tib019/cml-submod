@@ -117,6 +117,12 @@ class TestTree(unittest.TestCase):
         self.assertTrue(has_child(a, "focus", IDS["8b"]))
         self.assertTrue(has_child(b, "focus", IDS["8a"]))
 
+    def test_f8_not_after_phase1(self) -> None:
+        for k in ("8a", "8b"):
+            av = child(focuses()[IDS[k]], "available")
+            negs = [n for n in kids(av) if n.key == "NOT" and has_child(n, "has_country_flag", "SOV_cml_phase1_done")]
+            self.assertEqual(len(negs), 1, k)
+
     def test_f8a_osc_gate(self) -> None:
         av = child(focus("8a"), "available")
         cv = child(av, "check_variable")

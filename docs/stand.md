@@ -29,3 +29,7 @@ Aktualisiert 31.10.2026. Technisch grün ist keine Abnahme; Kriterium 3 der Spec
 - `descriptor.mod` von MD v2.0.3 trägt `version="2.0.2"`; `md_index.json` übernimmt den Wert wörtlich.
 - Vanilla-Sprites (z. B. `GFX_goal_generic_political_pressure`) stehen nicht im MD-Verzeichnis; `check.py` (Regel 3) lässt sie gesondert zu.
 - MD benutzt `add_namespace = …`; der Index sammelt `add_namespace` und `namespace`.
+
+## Abschluss AP10 (31.10.2026)
+
+Zweit-Review durch Sonnet ohne harten Fehler; Nachbesserungen (a)–(g) aus Spec 11 umgesetzt. Technisch fertig: 163 Tests, check.py ohne Funde, sim.py erfüllt alle Ziele, Build sauber. **Nächster Schritt: Spieltest durch den Nutzer nach docs/testprotokoll.md.** Danach Teilprojekt 2 (Phase 2 Kampfphase).

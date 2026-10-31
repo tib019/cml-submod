@@ -180,6 +180,7 @@ focus_tree = {
 			cml_adapter_cml_in_power = yes
 			has_country_flag = SOV_cml_path
 			check_variable = { SOV_cml_oscillation < @@f8a_osc_max@@ }
+			NOT = { has_country_flag = SOV_cml_phase1_done }
 		}
 		ai_will_do = {
 			base = 0
@@ -203,6 +204,7 @@ focus_tree = {
 		available = {
 			cml_adapter_cml_in_power = yes
 			has_country_flag = SOV_cml_path
+			NOT = { has_country_flag = SOV_cml_phase1_done }
 		}
 		ai_will_do = {
 			base = 0

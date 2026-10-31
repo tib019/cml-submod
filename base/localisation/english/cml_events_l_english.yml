@@ -40,3 +40,4 @@
  sov_cml.20.d:0 "The amplified feedback has reached its limit. Catch the campaign in good order, or break it."
  sov_cml.20.a:0 "Catch it"
  sov_cml.20.b:0 "Break it"
+ cml_capital_controls:0 "CML capital controls"

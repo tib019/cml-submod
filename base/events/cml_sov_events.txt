@@ -31,6 +31,7 @@ country_event = {
 	id = sov_cml.2
 	title = sov_cml.2.t
 	desc = sov_cml.2.d
+	picture = GFX_report_event_CdM
 	is_triggered_only = yes
 
 	option = {
