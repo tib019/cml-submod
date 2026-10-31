@@ -43,13 +43,15 @@ base/
   common/national_focus/cml_russia_focus.txt
   common/ideas/cml_ideas.txt
   common/dynamic_modifiers/cml_dynamic_modifiers.txt
-  common/decisions/cml_decisions.txt
+  common/decisions/cml_entry_decisions.txt  common/decisions/cml_feedback_decisions.txt
   common/decisions/categories/cml_decision_categories.txt
   common/scripted_effects/cml_effects.txt
   common/scripted_triggers/cml_triggers.txt
-  events/cml_sov_events.txt
-  localisation/german/cml_l_german.yml
-  localisation/english/cml_l_english.yml
+  common/scripted_localisation/cml_scripted_loc.txt
+  common/opinion_modifiers/cml_opinion_modifiers.txt
+  events/cml_sov_loop_events.txt  events/cml_sov_events.txt
+  localisation/german/cml_<bereich>_l_german.yml   (je Bereich eine Datei)
+  localisation/english/cml_<bereich>_l_english.yml
 md/
   common/scripted_effects/cml_adapter_md_effects.txt
   common/scripted_triggers/cml_adapter_md_triggers.txt
