@@ -55,7 +55,6 @@ base/
 md/
   common/scripted_effects/cml_adapter_md_effects.txt
   common/scripted_triggers/cml_adapter_md_triggers.txt
-  common/characters/cml_SOV_characters.txt
   descriptor.mod
 tools/
   md_index.py   build.py   check.py   sim.py
@@ -81,8 +80,8 @@ tools/
 | `cml_adapter_siloviki_opinion` | Effekt | liest `temp_opinion`, ruft `change_intelligence_community_opinion = yes` |
 | `cml_adapter_reduce_corruption` | Effekt | `decrease_corruption = yes` |
 | `cml_adapter_treasury` | Effekt | liest `cml_treasury_change` (Mrd. $), setzt `treasury_change` und ruft `modify_treasury_effect = yes` |
-| `cml_adapter_install_leader` | Effekt | `promote_character = SOV_cml_darja_wolnowa` |
-| `cml_adapter_rename_party` | Effekt | benennt die Partei auf Slot 4 in CML um, siehe Prüfpunkt P3 |
+| `cml_adapter_install_leader` | Effekt | `create_country_leader` mit Name „Darja Wolnowa“, `picture = GFX_portrait_generic_europe_female_01`, `ideology = communist_state`, Trait `emerging_communist_state` (Muster `events/Russia.txt:1631`) |
+| `cml_adapter_rename_party` | Effekt | in Teilprojekt 1 leer (nur `log`), siehe Abschnitt 9: MD benennt Parteien ideologiebezogen, nicht je Slot |
 
 Die MD-Effekte `change_<gruppe>_opinion` erwarten die Variable `temp_opinion` (so im KPRF-Ast verwendet). Die Adapter reichen sie durch.
 
@@ -90,7 +89,7 @@ Die MD-Effekte `change_<gruppe>_opinion` erwarten die Variable `temp_opinion` (s
 
 `base/werte.toml` enthält jeden Zahlenwert aus Abschnitt 6. In den Skriptdateien stehen statt Zahlen Platzhalter `@@name@@`. `tools/build.py` ersetzt sie, fügt `base/` und `md/` zusammen und schreibt `dist/cml_md/` plus `dist/cml_md.mod`. `dist/` ist in `.gitignore`. `tools/sim.py` liest dieselbe Datei.
 
-`md/descriptor.mod`: `name = "CML – Russland (MD)"`, `dependencies = { "Millennium Dawn: A Modern Day Mod" }`, `supported_version = "1.17.*"`, `tags = { "Alternative History" "National Focuses" }`. Den genauen Abhängigkeitsnamen und die unterstützte Spielversion übernimmt der Haiku-Agent aus `descriptor.mod` von MD v2.0.3 (Prüfpunkt P5).
+`md/descriptor.mod`: `name = "CML – Russland (MD)"`, `dependencies = { "Millennium Dawn: Developer Version" "Millennium Dawn: A Modern Day Mod" }` (Entwickler- und Workshop-Name; nicht vorhandene Einträge ignoriert der Launcher), `supported_version = "1.19.*"` (wie MD v2.0.3), `tags = { "Alternative History" "National Focuses" }`. Den Workshop-Namen bestätigt der Nutzer im Launcher (Testschritt T1).
 
 ## 5. Spielablauf
 
@@ -139,7 +138,7 @@ Hilfseffekte in `base/common/scripted_effects/cml_effects.txt`: `cml_add_party_b
 | 8a | `SOV_cml_close_the_loop` | Den Regelkreis schließen | `f8a_cost` | 5, 4 | 7 | 8b | `available` zusätzlich: Aufschaukeln < `f8a_osc_max`. Basis +`f8a_base`; `cml_end_campaign` |
 | 8b | `SOV_cml_amplify_the_feedback` | Die Rückkopplung verstärken | `f8b_cost` | 9, 4 | 7 | 8a | Basis +`f8b_base`, Aufschaukeln +`f8b_osc`; Flag `SOV_cml_amplified` |
 
-Ausschluss 8a/8b steht in beiden Fokussen. Icons: vorhandene MD-Sprites, Auswahl durch Haiku (Prüfpunkt P4), Fallback `GFX_goal_generic_political_pressure`.
+Ausschluss 8a/8b steht in beiden Fokussen. Icons laut Tabelle P4 in `docs/md-referenz/pruefpunkte.md` (Fokus-Icons ohne `GFX_`-Präfix wie im Russland-Baum), Ersatz `political_pressure`.
 
 ### 5.4 Geister
 
@@ -188,7 +187,7 @@ Die Werte in dieser Tabelle stehen ebenfalls in `werte.toml` (Schlüssel `e<id>_
 
 ### 5.7 Führungsfigur
 
-`md/common/characters/cml_SOV_characters.txt`: Charakter `SOV_cml_darja_wolnowa`, Name „Darja Wolnowa“, `country_leader` mit Ideologie `communist_state`, Porträt: vorhandenes MD-Generikporträt (Prüfpunkt P4). Wird nur über Ereignis 2 B befördert.
+Kein eigener Charakter-Eintrag: MD setzt russische Staatsoberhäupter per `create_country_leader` in Ereignissen (`events/Russia.txt:1631`). `cml_adapter_install_leader` macht das genauso, nur über Ereignis 2 B. Porträt ist ein generisches MD-Porträt (Platzhalter).
 
 ## 6. Startwerte (`base/werte.toml`)
 
@@ -319,3 +318,18 @@ Jeder Prüfpunkt wird mit Datei:Zeile aus MD v2.0.3 in `docs/md-referenz/` beleg
 - Jeder Subagent bekommt sein Modell ausdrücklich vorgegeben.
 - Briefe verbieten: Push, `git stash`/`checkout`/`reset`, Arbeiten außerhalb des genannten Pfads, Änderungen an Spec und Plan.
 - Der Stand liegt in `docs/stand.md`: abgeschlossene Pakete, nächstes Paket, offene Prüfpunkte.
+
+## 11. Entscheidungen nach der Recherche (AP0, 31.10.2026)
+
+Belege: `docs/md-referenz/pruefpunkte.md`.
+
+| # | Entscheidung |
+| --- | --- |
+| P1 | Interessengruppen werden per `swap_ideas` getauscht wie in MD (`05_russia.txt:12680`, `05_ENG_decisions.txt:104`). Ob dabei `on_add` der neuen Gruppe läuft (Startmeinung), ist nicht belegt und wird in Testschritt T4 geprüft. Fällt T4 durch, gilt der Fallback „nur Meinungsänderung“. |
+| P2 | `industrial_capacity_factory` und `consumer_goods_factor` werden wie in MD direkt genutzt. |
+| P3 | Keine Parteiumbenennung in Teilprojekt 1 (MD benennt per `set_party_name` je Ideologie, nicht je Slot). `cml_adapter_rename_party` bleibt als leerer Adapter bestehen. |
+| P4 | Icons laut Tabelle P4. Die Vanilla-Fallbacks der Spec gibt es in MD nicht; Ersatz `political_pressure` bzw. `GFX_idea_generic_political_pressure`. Porträt Wolnowa: `GFX_portrait_generic_europe_female_01` (eigentlich ein Wissenschaftlerinnen-Porträt, Platzhalter). |
+| P5 | Abhängigkeit auf beide MD-Namen, `supported_version = "1.19.*"`. Der Tag v2.0.3 trägt in `descriptor.mod` die Version 2.0.2. |
+| P6 | Namespace `sov_cml` ist frei und wird genutzt. |
+| P7 | Staatsoberhaupt per `create_country_leader` statt `promote_character`; kein Charakter-Eintrag. |
+
